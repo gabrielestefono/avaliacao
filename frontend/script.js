@@ -27,4 +27,31 @@ document.addEventListener("DOMContentLoaded", function () {
       inputHidden.value = selectedValue;
     });
   }
+
+  const form = document.querySelector("form");
+  if (!form) {
+    throw new Error("Form element not found");
+  }
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    /**
+     * @type {HTMLInputElement|null}
+     */
+    const selected = document.querySelector(".active");
+    if (!selected) {
+      alert("Please select a rating before submitting.");
+      return;
+    }
+    const selectedValue = parseInt(selected.innerText);
+    fetch("http://localhost:3000/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify({
+        rating: selectedValue,
+      }),
+    });
+  });
 });
